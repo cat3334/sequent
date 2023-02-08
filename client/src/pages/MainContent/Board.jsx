@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
+import { useTable } from "react-table";
 import "./Board.scss";
+import Row from "./Row";
 function Board() {
+  //BGGG
+
   const past7Days = [...Array(7).keys()]
     .map((index) => {
       const date = new Date();
@@ -11,6 +15,22 @@ function Board() {
       });
     })
     .reverse();
+
+  const habits = [
+    { name: "czytanie", markedDates: ["1 Feb", "5 Feb"] },
+    { name: "słuchanie", markedDates: ["2 Feb", "5 Feb"] },
+    { name: "malowanie", markedDates: ["3 Feb", "5 Feb"] },
+  ];
+
+  const tableRows = habits.map((habit) => {
+    return (
+      <Row
+        name={habit.name}
+        datesInRange={past7Days}
+        markedDates={habit.markedDates}
+      />
+    );
+  });
 
   useEffect(() => {
     const getData = async () => {
@@ -27,28 +47,8 @@ function Board() {
 
   const dateColumns = past7Days.map((day) => <th scope="col">{day}</th>);
 
-  const handleAddHabit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("http://localhost:8081/test", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        mode: "cors",
-        body: JSON.stringify({ habit: "TWOJASTARADESTROYERDRAGONDILDO111!!!" }),
-      });
-      const data = await response.json();
-      alert(data);
-    } catch (e) {
-      alert(e);
-    }
-  };
   return (
     <div className="board">
-      <form onSubmit={(e) => handleAddHabit(e)}>
-        <label htmlFor="habit">Add a new one!</label>
-        <input type="text" id="habit" name="habit" />
-        <button>Submit</button>
-      </form>
       <table className="board__table">
         <caption>Tracked Habits</caption>
         <thead>
@@ -68,6 +68,7 @@ function Board() {
             <td></td>
             <td></td>
           </tr>
+          {tableRows}
           <tr>
             <th scope="row">Stara</th>
             <td></td>

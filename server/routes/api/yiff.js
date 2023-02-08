@@ -1,8 +1,13 @@
 const express = require("express");
-const { habits_create } = require("../../controllers/habitsControler");
+const {
+  habits_create,
+  habits_get,
+} = require("../../controllers/habitsControler");
 const router = express.Router();
 
-router.get("/", (req, res) => res.status(200).json("TWOJA STARAAAAA SLAY"));
+router.get("/", async (req, res) => {
+  res.json(await habits_get());
+});
 router.post("/", async (req, res, next) => {
   try {
     console.log(req.body);
