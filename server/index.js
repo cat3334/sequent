@@ -22,3 +22,15 @@ var server = app.listen(8081, function () {
 
   console.log("Example app listening at http://%s:%s", host, port);
 });
+
+var ws = require("ws");
+
+const wss = new ws.WebSocketServer({ server: server, path: "/" });
+
+wss.on("connection", function connection(ws) {
+  ws.on("message", function message(data) {
+    console.log("received: %s", data);
+  });
+
+  ws.send("something");
+});
