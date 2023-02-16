@@ -5,6 +5,8 @@ var bodyParser = require("body-parser");
 var watcher = require("./db/watchDB");
 const cors = require("cors");
 var apiRouter = require("./routes/api/yiff");
+var ws = require("ws");
+
 app.use(express.static("public"));
 app.use(cors({ origin: true, credentials: true }));
 
@@ -23,14 +25,23 @@ var server = app.listen(8081, function () {
   console.log("Example app listening at http://%s:%s", host, port);
 });
 
-var ws = require("ws");
-
 const wss = new ws.WebSocketServer({ server: server, path: "/" });
 
 wss.on("connection", function connection(ws) {
   ws.on("message", function message(data) {
-    console.log("received: %s", data);
+    console.log("receivedd: %s", data);
   });
 
   ws.send("something");
 });
+
+// function broadcastMessage(json) {
+//   // We are sending the current data to all connected active clients
+//   const data = JSON.stringify(json);
+//   for (let userId in clients) {
+//     let client = clients[userId];
+//     if (client.readyState === WebSocket.OPEN) {
+//       client.send(data);
+//     }
+//   }
+// }

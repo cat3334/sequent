@@ -3,7 +3,8 @@ const db = require("../db/db");
 exports.habits_get = async () => {
   try {
     const data = await db.pool.query(
-      `SELECT activities.activity_id AS id, name, days, frequency, JSON_OBJECTAGG(IFNULL(logs.activity_day, ""), logs.activity_status) AS days FROM activities LEFT JOIN logs ON logs.activity_id = activities.activity_id GROUP BY activities.activity_id`
+      `SELECT activities.activity_id AS id, name, days, frequency, JSON_ARRAYAGG(JSON_OBJECT("date", logs.activity_day, "status", logs.activity_status, "log_id", total_id)) AS logs
+        FROM activities LEFT JOIN logs ON logs.activity_id = activities.activity_id GROUP BY activities.activity_id`
     );
     return data[0];
   } catch (err) {
@@ -42,6 +43,18 @@ exports.habit_updateDay = async (id, day, status) => {
   try {
     await db.pool.query(
       `UPDATE logs SET activity_status = "${status}" WHERE activity_id = ${id} AND activity_day = "${day}"`
+    );
+    return "OK";
+  } catch (e) {
+    console.error(e);
+    return "nei działa, sry ://";
+  }
+};
+
+exports.habit_deleteDay = async (id, day, status) => {
+  try {
+    await db.pool.query(
+      `DELETE FROM logs WHERE activity_id = ${id} AND activity_day = "${day}"`
     );
     return "OK";
   } catch (e) {

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./Board.scss";
 import Row from "./Row";
-function Board() {
+function Board(props) {
   const [habitsData, setHabitsData] = useState();
 
   useEffect(() => {
+    props.setDataUpdated(false);
     const getData = async () => {
       try {
         const response = await fetch("http://localhost:8081/test/v1/habits");
@@ -16,7 +17,7 @@ function Board() {
       }
     };
     getData();
-  }, []);
+  }, [props.dataUpdated]);
 
   const past7Days = [...Array(7).keys()].map((index) => {
     const date = new Date();
@@ -29,7 +30,7 @@ function Board() {
     return dateStr;
   });
 
-  const tableHeaders = past7Days.map((day) => {
+  const tableHeaders = props.selectedDates.map((day) => {
     const yearlessDay = day.split(",")[0];
     return <th scope="col">{yearlessDay}</th>;
   });
@@ -44,8 +45,9 @@ function Board() {
     return (
       <Row
         name={habit.name}
-        datesInRange={past7Days}
-        markedDates={habit.days}
+        setDataUpdated={props.setDataUpdated}
+        selectedDates={props.selectedDates}
+        markedEntries={habit.logs}
         key={habit.id}
         id={habit.id}
       />
@@ -55,7 +57,6 @@ function Board() {
   return (
     <div className="board">
       <table className="board__table">
-        <caption>Tracked Habits</caption>
         <thead>
           <tr>
             <th scope="col">Habit</th>

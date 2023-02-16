@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-function HabitForm() {
-  const [habitName, setHabitName] = useState("");
+function HabitForm(props) {
+  const [habitName, setHabitName] = useState();
 
   const handleChangeInput = (e) => {
     setHabitName(e.target.value);
@@ -16,8 +16,8 @@ function HabitForm() {
         mode: "cors",
         body: JSON.stringify({ habit: habitName }),
       });
-      const data = await response.json();
-      alert(data);
+      props.setDataUpdated(true);
+      alert("Habit added!");
     } catch (e) {
       alert(e);
     }

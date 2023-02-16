@@ -1,33 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Board from "./Board";
 import HabitForm from "./HabitForm";
+import WeekChanger from "./WeekChanger";
 
 function MainContent() {
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("http://localhost:8081/test/v1/habits/79", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        mode: "cors",
-        body: JSON.stringify({ day: "Feb 14, 2023" }),
-      });
-      const data = await response.json();
-      alert(data);
-    } catch (e) {
-      alert(e);
-    }
+  const [dataUpdated, setDataUpdated] = useState(false);
+  const [selectedDates, setSelectedDates] = useState([]);
+  const [weekOffset, setWeekOffset] = useState(0);
+
+  useEffect(() => {
+    setSelectedDates(
+      [...Array(7).keys()].map((index) => {
+        const date = new Date();
+        date.setDate(date.getDate() - index + weekOffset * 7);
+        const dateStr = date.toLocaleDateString("en-US", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        });
+        return dateStr;
+      })
+    );
+  }, [weekOffset]);
+
+  const weekOffsetChanger = (value) => {
+    setWeekOffset((prev) => prev + value);
   };
 
   return (
     <div>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <label htmlFor="xd">test loga</label>
-        <input type="text" id="xd" name="xd" />
-        <button>TEST</button>
-      </form>
-      <HabitForm />
-      <Board />
+      <HabitForm setDataUpdated={setDataUpdated} />
+      <WeekChanger weekOffsetChanger={weekOffsetChanger} />
+      <Board
+        dataUpdated={dataUpdated}
+        setDataUpdated={setDataUpdated}
+        selectedDates={selectedDates}
+      />
     </div>
   );
 }

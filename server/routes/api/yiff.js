@@ -4,6 +4,7 @@ const {
   habits_get,
   habit_insertDay,
   habit_updateDay,
+  habit_deleteDay,
 } = require("../../controllers/habitsControler");
 const router = express.Router();
 
@@ -38,6 +39,18 @@ router.put("/v1/habits/:id", async (req, res, next) => {
     console.log(req.body);
     res.json(
       await habit_updateDay(req.params.id, req.body.day, req.body.status)
+    );
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+});
+
+router.delete("/v1/habits/:id", async (req, res, next) => {
+  try {
+    console.log(req.body);
+    res.json(
+      await habit_deleteDay(req.params.id, req.body.day, req.body.status)
     );
   } catch (err) {
     console.log(err);

@@ -5,9 +5,9 @@ var dsn = {
   password: process.env.password,
 };
 var mysqlEventWatcher = MySQLEvents(dsn);
-console.log(mysqlEventWatcher);
+// console.log(mysqlEventWatcher);
 var watcher = mysqlEventWatcher.add(
-  "sequent.activities",
+  "sequent",
   function (oldRow, newRow, event) {
     console.log("TWOJA STARA122222!!!!!");
     //row inserted
@@ -18,11 +18,13 @@ var watcher = mysqlEventWatcher.add(
 
     //row deleted
     if (newRow === null) {
+      console.log("TWOJA STARA122222!!!!!");
       //delete code goes here
     }
 
     //row updated
     if (oldRow !== null && newRow !== null) {
+      console.log("TWOJA STARA122222!!!!!");
       //update code goes here
     }
 

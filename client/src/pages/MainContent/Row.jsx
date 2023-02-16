@@ -1,17 +1,25 @@
 import React, { useState } from "react";
 
 function Row(props) {
-  const getFetchParams = (status) => {
-    if (!status) {
-      return { status: "Done", method: "POST" };
-    } else if (status === "Done") {
-      return { status: "Partly", method: "PUT" };
-    } else {
-      return { status: "", method: "DELETE" };
+  // find the user entries from selected days
+  const habitCellsEl = props.selectedDates.map((date, i) => {
+    const index = props.markedEntries.findIndex((entry) => entry.date === date);
+    let status;
+    if (index != -1) {
+      status = props.markedEntries[index].status;
     }
-  };
+    return (
+      <td
+        key={`${props.name}_${date}`}
+        day={date}
+        onClick={(e) => handleCellClick(e, date, status)}
+      >
+        {status}
+      </td>
+    );
+  });
 
-  const handleCellClick = async (e, day, status) => {
+  const handleCellClick = async (e, date, status) => {
     const fetchParams = getFetchParams(status);
     e.preventDefault();
     try {
@@ -23,29 +31,28 @@ function Row(props) {
           mode: "cors",
           body: JSON.stringify({
             status: `${fetchParams.status}`,
-            day: `${day}`,
+            day: `${date}`,
           }),
         }
       );
       const data = await response.json();
-      alert(data);
+      if (data) {
+        props.setDataUpdated(true);
+      }
     } catch (e) {
       alert(e);
     }
   };
 
-  const habitCellsEl = props.datesInRange.map((day, i) => {
-    let status = props.markedDates[day];
-    return (
-      <td
-        key={`${props.name}_${day}`}
-        day={day}
-        onClick={(e) => handleCellClick(e, day, status)}
-      >
-        {status}
-      </td>
-    );
-  });
+  const getFetchParams = (status) => {
+    if (!status) {
+      return { status: "Done", method: "POST" };
+    } else if (status === "Done") {
+      return { status: "Partly", method: "PUT" };
+    } else {
+      return { status: "", method: "DELETE" };
+    }
+  };
 
   return (
     <tr>
