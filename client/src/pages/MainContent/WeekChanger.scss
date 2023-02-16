@@ -3,9 +3,9 @@
   align-items: center;
   justify-content: center;
   gap: 3rem;
-}
 
-.weekChanger__arrow {
-  cursor: pointer;
-  font-size: 2rem;
+  &__arrow {
+    cursor: pointer;
+    font-size: 2rem;
+  }
 }

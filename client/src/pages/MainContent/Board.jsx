@@ -63,28 +63,7 @@ function Board(props) {
             {tableHeaders}
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Twoja</th>
-            <td>V</td>
-            <td>X</td>
-            <td>V</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          {tableRows}
-          <tr>
-            <th scope="row">Stara</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
+        <tbody>{tableRows}</tbody>
       </table>
     </div>
   );

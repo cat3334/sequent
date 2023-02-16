@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import "./HabitForm.scss";
 function HabitForm(props) {
   const [habitName, setHabitName] = useState();
 
@@ -24,16 +24,18 @@ function HabitForm(props) {
   };
 
   return (
-    <form onSubmit={(e) => handleSubmitHabit(e)}>
+    <form className="habitForm" onSubmit={(e) => handleSubmitHabit(e)}>
       <label htmlFor="habit">Add a new one!</label>
-      <input
-        type="text"
-        id="habit"
-        name="habit"
-        value={habitName}
-        onChange={handleChangeInput}
-      />
-      <button>Submit</button>
+      <div className="habitForm__flexContainer">
+        <input
+          type="text"
+          id="habit"
+          name="habit"
+          value={habitName}
+          onChange={handleChangeInput}
+        />
+        <button>Submit</button>
+      </div>
     </form>
   );
 }

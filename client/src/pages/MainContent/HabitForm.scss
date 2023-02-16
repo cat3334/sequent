@@ -1,0 +1,19 @@
+.habitForm {
+  display: flex;
+  margin: 1rem 0;
+  flex-direction: column;
+  font-weight: bold;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.5rem;
+
+  & > * {
+    width: 15rem;
+  }
+
+  &__flexContainer {
+    display: flex;
+    justify-content: center;
+  }
+}

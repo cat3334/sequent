@@ -1,5 +1,5 @@
 import React from "react";
-import "./WeekChanger.css";
+import "./WeekChanger.scss";
 function WeekChanger(props) {
   return (
     <div className="weekChanger">
