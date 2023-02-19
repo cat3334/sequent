@@ -8,7 +8,13 @@ function Board(props) {
     props.setDataUpdated(false);
     const getData = async () => {
       try {
-        const response = await fetch("http://localhost:8081/test/v1/habits");
+        const response = await fetch("http://localhost:8081/habits", {
+          credentials: "include",
+        });
+        if (!response.ok) {
+          const e = response.json();
+          throw new Error(e.message);
+        }
         const data = await response.json();
         console.log(data);
         setHabitsData(data);
@@ -18,17 +24,6 @@ function Board(props) {
     };
     getData();
   }, [props.dataUpdated]);
-
-  const past7Days = [...Array(7).keys()].map((index) => {
-    const date = new Date();
-    date.setDate(date.getDate() - index);
-    const dateStr = date.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-    return dateStr;
-  });
 
   const tableHeaders = props.selectedDates.map((day) => {
     const yearlessDay = day.split(",")[0];

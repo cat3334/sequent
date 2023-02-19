@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Modal from "../../components/Modal";
+import Register from "./Register";
 import "./Guide.scss";
+import Login from "./Login";
 function Guide() {
+  const [showRegister, setShowRegister] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+
+  const closeForm = () => {
+    setShowRegister(false);
+    setShowLogin(false);
+  };
+
   return (
     <div className="a">
       <section className="guide container">
@@ -22,11 +33,24 @@ function Guide() {
           <Link to="/board" className="bttn">
             Try it Out!
           </Link>
-          <a href="/" className="bttn">
+          <button className="bttn" onClick={() => setShowRegister(true)}>
             Register
-          </a>
+          </button>
+          <button className="bttn" onClick={() => setShowLogin(true)}>
+            Login
+          </button>
         </div>
       </section>
+      {showRegister && (
+        <Modal closeModal={closeForm}>
+          <Register />
+        </Modal>
+      )}
+      {showLogin && (
+        <Modal closeModal={closeForm}>
+          <Login />
+        </Modal>
+      )}
     </div>
   );
 }

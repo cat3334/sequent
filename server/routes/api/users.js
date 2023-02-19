@@ -1,38 +1,20 @@
 const express = require("express");
 const {
-  habits_create,
-  habits_get,
-  habit_insertDay,
   habit_updateDay,
   habit_deleteDay,
 } = require("../../controllers/habitsControler");
+const {
+  user_create,
+  user_login,
+  user_validate,
+} = require("../../controllers/usersControler");
 const router = express.Router();
 
-router.get("/v1/habits", async (req, res) => {
-  res.json(await habits_get());
-});
+router.post("/new", user_create);
 
-router.post("/v1/habits", async (req, res, next) => {
-  try {
-    console.log(req.body);
-    res.json(await habits_create(req.body.habit));
-  } catch (err) {
-    console.log(err);
-    next(err);
-  }
-});
+router.post("/login", user_login);
 
-router.post("/v1/habits/:id", async (req, res, next) => {
-  try {
-    console.log(req.body);
-    res.json(
-      await habit_insertDay(req.params.id, req.body.day, req.body.status)
-    );
-  } catch (err) {
-    console.log(err);
-    next(err);
-  }
-});
+router.get("/validate", user_validate);
 
 router.put("/v1/habits/:id", async (req, res, next) => {
   try {

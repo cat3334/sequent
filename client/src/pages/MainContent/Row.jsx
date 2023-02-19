@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 function Row(props) {
   // find the user entries from selected days
-  const habitCellsEl = props.selectedDates.map((date, i) => {
+  const habitCellsEl = props.selectedDates.map((date) => {
     const index = props.markedEntries.findIndex((entry) => entry.date === date);
     let status;
     if (index != -1) {
@@ -23,22 +23,21 @@ function Row(props) {
     const fetchParams = getFetchParams(status);
     e.preventDefault();
     try {
-      const response = await fetch(
-        `http://localhost:8081/test/v1/habits/${props.id}`,
-        {
-          method: `${fetchParams.method}`,
-          headers: { "Content-Type": "application/json" },
-          mode: "cors",
-          body: JSON.stringify({
-            status: `${fetchParams.status}`,
-            day: `${date}`,
-          }),
-        }
-      );
-      const data = await response.json();
-      if (data) {
-        props.setDataUpdated(true);
+      const response = await fetch(`http://localhost:8081/habits/${props.id}`, {
+        method: `${fetchParams.method}`,
+        headers: { "Content-Type": "application/json" },
+        mode: "cors",
+        body: JSON.stringify({
+          status: `${fetchParams.status}`,
+          day: `${date}`,
+        }),
+      });
+
+      if (!response.ok) {
+        const e = await response.json();
+        throw new Error(e.message);
       }
+      props.setDataUpdated(true);
     } catch (e) {
       alert(e);
     }

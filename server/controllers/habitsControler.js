@@ -1,64 +1,64 @@
 const db = require("../db/db");
 
-exports.habits_get = async () => {
+exports.habits_get = async (req, res, next) => {
   try {
-    const data = await db.pool.query(
+    const getUserId = await db.pool.query(
       `SELECT activities.activity_id AS id, name, days, frequency, JSON_ARRAYAGG(JSON_OBJECT("date", logs.activity_day, "status", logs.activity_status, "log_id", total_id)) AS logs
         FROM activities LEFT JOIN logs ON logs.activity_id = activities.activity_id GROUP BY activities.activity_id`
     );
-    return data[0];
-  } catch (err) {
-    console.error(err);
+    const query = await db.pool.query(
+      `SELECT activities.activity_id AS id, name, days, frequency, JSON_ARRAYAGG(JSON_OBJECT("date", logs.activity_day, "status", logs.activity_status, "log_id", total_id)) AS logs
+        FROM activities LEFT JOIN logs ON logs.activity_id = activities.activity_id GROUP BY activities.activity_id`
+    );
+    //TEST?TES
+    console.log(req.sessionID);
+
+    res.json(query[0]);
+  } catch (e) {
+    next(e);
   }
 };
 
-exports.habits_create = async (name) => {
+exports.habits_create = async (req, res, next) => {
   try {
-    await db.pool.query(
-      `INSERT INTO activities (name, days, frequency) VALUES ("${name}", 0, 0)`
+    const response = await db.pool.query(
+      `INSERT INTO activities (name, days, frequency) VALUES ("${req.body.habit}", 0, 0)`
     );
-    // await db.pool.query(
-    //   `INSERT INTO logs (activity_id, activity_day, activity_status) VALUES (LAST_INSERT_ID(), "today", "DONE")`
-    // );
-    return "OK";
+    return res.json(response);
   } catch (e) {
-    console.error(e);
-    return "nei działa, sry ://";
+    next(e);
   }
 };
 
-exports.habit_insertDay = async (id, day, status) => {
+exports.habit_insertDay = async (req, res, next) => {
   try {
     await db.pool.query(
-      `INSERT INTO logs (activity_id, activity_day, activity_status) VALUES ("${id}", "${day}", "${status}") ON DUPLICATE KEY UPDATE activity_id = "${id}"`
+      `INSERT INTO logs (activity_id, activity_day, activity_status) VALUES ("${req.params.id}", "${req.body.day}", "${req.body.status}") ON DUPLICATE KEY UPDATE activity_id = "${req.params.id}"`
     );
-    return "OK";
+    res.status(200).send();
   } catch (e) {
-    console.error(e);
-    return "nei działa, sry ://";
+    next(e);
   }
 };
 
-exports.habit_updateDay = async (id, day, status) => {
+exports.habit_updateDay = async (req, res, next) => {
   try {
     await db.pool.query(
-      `UPDATE logs SET activity_status = "${status}" WHERE activity_id = ${id} AND activity_day = "${day}"`
+      `UPDATE logs SET activity_status = "${req.body.status}" WHERE activity_id = ${req.params.id} AND activity_day = "${req.body.day}"`
     );
-    return "OK";
+    res.status(204).send();
   } catch (e) {
-    console.error(e);
-    return "nei działa, sry ://";
+    next(e);
   }
 };
 
-exports.habit_deleteDay = async (id, day, status) => {
+exports.habit_deleteDay = async (req, res, next) => {
   try {
     await db.pool.query(
-      `DELETE FROM logs WHERE activity_id = ${id} AND activity_day = "${day}"`
+      `DELETE FROM logs WHERE activity_id = ${req.params.id} AND activity_day = "${req.body.day}"`
     );
-    return "OK";
+    res.status(204).send();
   } catch (e) {
-    console.error(e);
-    return "nei działa, sry ://";
+    next(e);
   }
 };

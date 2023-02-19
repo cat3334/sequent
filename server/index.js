@@ -1,47 +1,48 @@
 require("dotenv").config();
 var express = require("express");
 var app = express();
+const session = require("express-session");
 var bodyParser = require("body-parser");
-var watcher = require("./db/watchDB");
 const cors = require("cors");
-var apiRouter = require("./routes/api/yiff");
-var ws = require("ws");
-
-app.use(express.static("public"));
-app.use(cors({ origin: true, credentials: true }));
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use("/test", apiRouter);
-
-app.get("/", function (req, res) {
-  res.send("Hello World");
-});
+const { sessionStore } = require("./db/store.js");
+var habitsApiRouter = require("./routes/api/habits");
+var usersApiRouter = require("./routes/api/users");
 
 var server = app.listen(8081, function () {
   var host = server.address().address;
   var port = server.address().port;
-
-  console.log("Example app listening at http://%s:%s", host, port);
 });
 
-const wss = new ws.WebSocketServer({ server: server, path: "/" });
+app.use(express.static("public"));
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
-wss.on("connection", function connection(ws) {
-  ws.on("message", function message(data) {
-    console.log("receivedd: %s", data);
-  });
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-  ws.send("something");
+const IN_PROD = process.env.env === "production";
+const TWO_HOURS = 1000 * 60 * 60 * 2;
+app.use(
+  session({
+    name: process.env.session_name,
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore,
+    secret: process.env.session_secret,
+    cookie: {
+      maxAge: TWO_HOURS,
+      sameSite: true,
+      // secure: IN_PROD,
+      secure: false,
+    },
+  })
+);
+
+app.use("/habits", habitsApiRouter);
+app.use("/users", usersApiRouter);
+
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  console.error(err.message, err.stack);
+  res.status(statusCode).json({ message: err.message });
+  return;
 });
-
-// function broadcastMessage(json) {
-//   // We are sending the current data to all connected active clients
-//   const data = JSON.stringify(json);
-//   for (let userId in clients) {
-//     let client = clients[userId];
-//     if (client.readyState === WebSocket.OPEN) {
-//       client.send(data);
-//     }
-//   }
-// }

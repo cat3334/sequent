@@ -10,7 +10,7 @@ function HabitForm(props) {
   const handleSubmitHabit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8081/test/v1/habits", {
+      const response = await fetch("http://localhost:8081/habits", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         mode: "cors",
