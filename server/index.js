@@ -35,9 +35,8 @@ app.use(
     secret: process.env.session_secret,
     cookie: {
       maxAge: TWO_HOURS,
-      sameSite: true,
+      sameSite: false,
       secure: IN_PROD,
-      secure: false,
     },
   })
 );
