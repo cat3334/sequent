@@ -7,9 +7,12 @@ function Header() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:8081/users/logout", {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER}/users/logout`,
+        {
+          credentials: "include",
+        }
+      );
       if (!response.ok) {
         const e = response.json();
         throw new Error(e.message);
