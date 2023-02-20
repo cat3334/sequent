@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
+
 import { UserContext } from "../../store/userContex";
 import "./AuthForm.scss";
 function Login() {
+  const [error, setError] = useState(true);
   const { userDispatch, userState } = useContext(UserContext);
-
   const [inputData, setInputData] = useState({
     email: "",
     password: "",
@@ -19,16 +20,19 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8081/users/login", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        mode: "cors",
-        body: JSON.stringify({
-          email: inputData.email,
-          password: inputData.password,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER}/users/login`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+          body: JSON.stringify({
+            email: inputData.email,
+            password: inputData.password,
+          }),
+        }
+      );
       if (!response.ok) {
         const e = await response.json();
         throw new Error(e.message);
@@ -44,6 +48,7 @@ function Login() {
   console.log(userState);
   return (
     <form className="auth-form">
+      {/* {error && <Prompt />} */}
       <div className="auth-form__input-container">
         <label htmlFor="email">Email</label>
         <input

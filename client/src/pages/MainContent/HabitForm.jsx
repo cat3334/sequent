@@ -12,7 +12,7 @@ function HabitForm(props) {
   const handleSubmitHabit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8081/habits", {
+      const response = await fetch(`${process.env.REACT_APP_SERVER}/habits`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         mode: "cors",
@@ -23,7 +23,6 @@ function HabitForm(props) {
         throw new Error(e.message);
       }
       props.setDataUpdated(true);
-      alert("Habit added!");
     } catch (e) {
       alert(e);
     }

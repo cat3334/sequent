@@ -14,7 +14,7 @@ function Guide() {
 
   useEffect(() => {
     if (userState.user_name) {
-      navigate(`/board/${userState.user_name}`);
+      navigate(`/board/`);
     }
   }, [userState, navigate]);
 
@@ -42,7 +42,7 @@ function Guide() {
           dolorem facere debitis non.
         </p>
         <div className="guide__buttons mt-m">
-          <Link to="/board/guest" className="bttn">
+          <Link to="/board" className="bttn">
             Try it Out!
           </Link>
           <button className="bttn" onClick={() => setShowRegister(true)}>

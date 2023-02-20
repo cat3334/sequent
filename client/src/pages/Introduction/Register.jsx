@@ -20,17 +20,20 @@ function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8081/users/new", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        mode: "cors",
-        body: JSON.stringify({
-          email: inputData.email,
-          username: inputData.username,
-          password: inputData.password,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER}/users/new`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+          body: JSON.stringify({
+            email: inputData.email,
+            username: inputData.username,
+            password: inputData.password,
+          }),
+        }
+      );
       if (!response.ok) {
         const e = await response.json();
         throw new Error(e.message);

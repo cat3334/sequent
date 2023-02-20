@@ -1,24 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../store/userContex";
 import "./Board.scss";
 import Row from "./Row";
 function Board(props) {
-  const navigate = useNavigate();
-  const { id } = useParams();
   const { userState } = useContext(UserContext);
-  const [habitsData, setHabitsData] = useState();
-  useEffect(() => {
-    if (!userState.user_name && id != "guest") {
-      navigate("/");
-    }
-  }, [userState, navigate, id]);
+  const [habitsData, setHabitsData] = useState([]);
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userState.user_name) {
+      navigate(`/`);
+    }
+  }, [userState, navigate]);
+
+  // update data on user edit
   useEffect(() => {
     props.setDataUpdated(false);
     const getData = async () => {
       try {
-        const response = await fetch("http://localhost:8081/habits", {
+        const response = await fetch(`${process.env.REACT_APP_SERVER}/habits`, {
           credentials: "include",
         });
         if (!response.ok) {
@@ -35,16 +37,11 @@ function Board(props) {
     getData();
   }, [props.dataUpdated]);
 
+  // display selected week dates without the year
   const tableHeaders = props.selectedDates.map((day) => {
     const yearlessDay = day.split(",")[0];
     return <th scope="col">{yearlessDay}</th>;
   });
-
-  // const habits = [
-  //   { name: "czytanie", markedDates: ["1 Feb", "5 Feb"] },
-  //   { name: "słuchanie", markedDates: ["2 Feb", "5 Feb"] },
-  //   { name: "malowanie", markedDates: ["3 Feb", "5 Feb"] },
-  // ];
 
   const tableRows = habitsData?.map((habit) => {
     return (

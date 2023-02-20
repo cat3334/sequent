@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../../store/userContex";
 
 function Row(props) {
-  // find the user entries from selected days
+  const { userState } = useContext(UserContext);
   const habitCellsEl = props.selectedDates.map((date) => {
     const index = props.markedEntries.findIndex((entry) => entry.date === date);
     let status;
-    if (index != -1) {
+    if (index !== -1) {
       status = props.markedEntries[index].status;
     }
     return (
@@ -20,18 +21,22 @@ function Row(props) {
   });
 
   const handleCellClick = async (e, date, status) => {
-    const fetchParams = getFetchParams(status);
     e.preventDefault();
+    const fetchParams = getFetchParams(status);
+
     try {
-      const response = await fetch(`http://localhost:8081/habits/${props.id}`, {
-        method: `${fetchParams.method}`,
-        headers: { "Content-Type": "application/json" },
-        mode: "cors",
-        body: JSON.stringify({
-          status: `${fetchParams.status}`,
-          day: `${date}`,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER}/habits/${props.id}`,
+        {
+          method: `${fetchParams.method}`,
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+          body: JSON.stringify({
+            status: `${fetchParams.status}`,
+            day: `${date}`,
+          }),
+        }
+      );
 
       if (!response.ok) {
         const e = await response.json();

@@ -8,18 +8,21 @@ import { UserContext } from "./store/userContex";
 function App() {
   const { userDispatch } = useContext(UserContext);
 
+  // check if user session is valid and save user info in auth context
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch("http://localhost:8081/users/validate", {
-          credentials: "include",
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_SERVER}/users/validate`,
+          {
+            credentials: "include",
+          }
+        );
         if (!response.ok) {
           const e = response.json();
           throw new Error(e.message);
         }
         const data = await response.json();
-        console.log(data);
         userDispatch({
           type: "login",
           payload: { user_id: data.user_id, user_name: data.user_name },
@@ -33,12 +36,12 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div>
+      <>
         <Header />
-      </div>
+      </>
       <Routes>
         <Route path="/" element={<Guide />} />
-        <Route path="/board/:id" element={<MainContent />} />
+        <Route path="/board/" element={<MainContent />} />
       </Routes>
     </BrowserRouter>
   );

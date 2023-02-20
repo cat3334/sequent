@@ -14,7 +14,12 @@ var server = app.listen(8081, function () {
 });
 
 app.use(express.static("public"));
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://sequent.onrender.com/"],
+    credentials: true,
+  })
+);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
