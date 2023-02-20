@@ -17,21 +17,23 @@ app.use(express.static("public"));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "https://sequent.onrender.com/"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: ["http://localhost:3000", "https://sequent.onrender.com/*"],
+//     credentials: true,
+//   })
+// );
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   next();
+// });
+app.use(cors());
+app.options("*", cors());
 
 const IN_PROD = process.env.env === "production";
 const TWO_HOURS = 1000 * 60 * 60 * 2;
