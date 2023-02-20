@@ -23,6 +23,8 @@ app.use(
       "http://localhost:3000",
       "https://sequent.onrender.com",
       "https://sequent.onrender.com/",
+      "https://sequent.onrender.com/board",
+      "https://sequent.onrender.com/board/",
     ],
     credentials: true,
   })
