@@ -2,16 +2,10 @@ const db = require("../db/db");
 
 exports.habits_get = async (req, res, next) => {
   try {
-    const getUserId = await db.pool.query(
-      `SELECT activities.activity_id AS id, name, days, frequency, JSON_ARRAYAGG(JSON_OBJECT("date", logs.activity_day, "status", logs.activity_status, "log_id", total_id)) AS logs
-        FROM activities LEFT JOIN logs ON logs.activity_id = activities.activity_id GROUP BY activities.activity_id`
-    );
     const query = await db.pool.query(
-      `SELECT activities.activity_id AS id, name, days, frequency, JSON_ARRAYAGG(JSON_OBJECT("date", logs.activity_day, "status", logs.activity_status, "log_id", total_id)) AS logs
-        FROM activities LEFT JOIN logs ON logs.activity_id = activities.activity_id GROUP BY activities.activity_id`
+      `SELECT activities.activity_id AS id, name, JSON_ARRAYAGG(JSON_OBJECT("date", logs.activity_day, "status", logs.activity_status, "log_id", total_id)) AS logs
+        FROM activities LEFT JOIN logs ON logs.activity_id = activities.activity_id WHERE activities.user_id = "${req.session.user_id}" GROUP BY activities.activity_id`
     );
-    //TEST?TES
-    console.log(req.sessionID);
 
     res.json(query[0]);
   } catch (e) {
@@ -21,8 +15,9 @@ exports.habits_get = async (req, res, next) => {
 
 exports.habits_create = async (req, res, next) => {
   try {
+    console.log(req.session);
     const response = await db.pool.query(
-      `INSERT INTO activities (name, days, frequency) VALUES ("${req.body.habit}", 0, 0)`
+      `INSERT INTO activities (name, user_id) VALUES ("${req.body.name}", "${req.body.user_id}")`
     );
     return res.json(response);
   } catch (e) {

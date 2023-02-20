@@ -1,12 +1,24 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Modal from "../../components/Modal";
 import Register from "./Register";
 import "./Guide.scss";
 import Login from "./Login";
+import { UserContext } from "../../store/userContex";
 function Guide() {
+  const { userState } = useContext(UserContext);
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userState.user_name) {
+      navigate(`/board/${userState.user_name}`);
+    }
+  }, [userState, navigate]);
+
+  console.log(userState);
 
   const closeForm = () => {
     setShowRegister(false);
@@ -30,7 +42,7 @@ function Guide() {
           dolorem facere debitis non.
         </p>
         <div className="guide__buttons mt-m">
-          <Link to="/board" className="bttn">
+          <Link to="/board/guest" className="bttn">
             Try it Out!
           </Link>
           <button className="bttn" onClick={() => setShowRegister(true)}>

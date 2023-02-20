@@ -31,7 +31,7 @@ app.use(
     cookie: {
       maxAge: TWO_HOURS,
       sameSite: true,
-      // secure: IN_PROD,
+      secure: IN_PROD,
       secure: false,
     },
   })

@@ -6,15 +6,18 @@ const {
 const {
   user_create,
   user_login,
+  user_logout,
   user_validate,
 } = require("../../controllers/usersControler");
 const router = express.Router();
+
+router.get("/validate", user_validate);
 
 router.post("/new", user_create);
 
 router.post("/login", user_login);
 
-router.get("/validate", user_validate);
+router.get("/logout", user_logout);
 
 router.put("/v1/habits/:id", async (req, res, next) => {
   try {

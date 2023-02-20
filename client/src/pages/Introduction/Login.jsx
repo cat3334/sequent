@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { UserContext } from "../../store/userContex";
 import "./AuthForm.scss";
 function Login() {
-  const [userID, setUserId] = useState(null);
+  const { userDispatch, userState } = useContext(UserContext);
+
   const [inputData, setInputData] = useState({
     email: "",
     password: "",
@@ -33,13 +35,13 @@ function Login() {
       }
       console.log(response.headers);
       const data = await response.json();
-      console.log(data);
-      setUserId(data.userId);
+
+      userDispatch({ type: "login", payload: data });
     } catch (e) {
       alert(e);
     }
   };
-  console.log(userID);
+  console.log(userState);
   return (
     <form className="auth-form">
       <div className="auth-form__input-container">

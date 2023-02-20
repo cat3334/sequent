@@ -2,10 +2,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Guide from "./pages/Introduction/Guide";
 import Header from "./components/Header";
 import MainContent from "./pages/MainContent/MainContent";
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { UserContext } from "./store/userContex";
 
 function App() {
-  const [userId, setUserId] = useState(null);
+  const { userDispatch } = useContext(UserContext);
 
   useEffect(() => {
     const getData = async () => {
@@ -18,16 +19,17 @@ function App() {
           throw new Error(e.message);
         }
         const data = await response.json();
-        setUserId(data.user_id);
         console.log(data);
+        userDispatch({
+          type: "login",
+          payload: { user_id: data.user_id, user_name: data.user_name },
+        });
       } catch (e) {
         alert(e);
       }
     };
     getData();
-  }, []);
-
-  console.log(userId);
+  }, [userDispatch]);
 
   return (
     <BrowserRouter>
@@ -36,7 +38,7 @@ function App() {
       </div>
       <Routes>
         <Route path="/" element={<Guide />} />
-        <Route path="/board" element={<MainContent />} />
+        <Route path="/board/:id" element={<MainContent />} />
       </Routes>
     </BrowserRouter>
   );

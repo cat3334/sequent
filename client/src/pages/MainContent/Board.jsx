@@ -1,8 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { UserContext } from "../../store/userContex";
 import "./Board.scss";
 import Row from "./Row";
 function Board(props) {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const { userState } = useContext(UserContext);
   const [habitsData, setHabitsData] = useState();
+  useEffect(() => {
+    if (!userState.user_name && id != "guest") {
+      navigate("/");
+    }
+  }, [userState, navigate, id]);
 
   useEffect(() => {
     props.setDataUpdated(false);
@@ -12,7 +22,7 @@ function Board(props) {
           credentials: "include",
         });
         if (!response.ok) {
-          const e = response.json();
+          const e = await response.json();
           throw new Error(e.message);
         }
         const data = await response.json();

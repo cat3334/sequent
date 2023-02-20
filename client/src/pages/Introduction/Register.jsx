@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../../store/userContex";
 import "./AuthForm.scss";
 function Register() {
+  const { userDispatch, userState } = useContext(UserContext);
   const [inputData, setInputData] = useState({
     email: "",
+    username: "",
     password: "",
     password2: "",
   });
@@ -19,10 +22,12 @@ function Register() {
     try {
       const response = await fetch("http://localhost:8081/users/new", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         mode: "cors",
         body: JSON.stringify({
           email: inputData.email,
+          username: inputData.username,
           password: inputData.password,
         }),
       });
@@ -30,7 +35,12 @@ function Register() {
         const e = await response.json();
         throw new Error(e.message);
       }
-      console.log(response.ok);
+      const data = await response.json();
+      console.log(data);
+      userDispatch({
+        type: "login",
+        payload: { user_id: data.user_id, user_name: data.user_name },
+      });
     } catch (e) {
       alert(e);
     }
@@ -45,6 +55,16 @@ function Register() {
           id="email"
           className="auth-form__input"
           value={inputData.email}
+          onChange={(e) => inputChangeHandler(e)}
+        />
+      </div>
+      <div className="auth-form__input-container">
+        <label htmlFor="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          className="auth-form__input"
+          value={inputData.username}
           onChange={(e) => inputChangeHandler(e)}
         />
       </div>

@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { UserContext } from "../../store/userContex";
 import "./HabitForm.scss";
 function HabitForm(props) {
+  const { userState } = useContext(UserContext);
   const [habitName, setHabitName] = useState();
 
   const handleChangeInput = (e) => {
@@ -14,8 +16,12 @@ function HabitForm(props) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         mode: "cors",
-        body: JSON.stringify({ habit: habitName }),
+        body: JSON.stringify({ name: habitName, user_id: userState.user_id }),
       });
+      if (!response.ok) {
+        const e = await response.json();
+        throw new Error(e.message);
+      }
       props.setDataUpdated(true);
       alert("Habit added!");
     } catch (e) {
