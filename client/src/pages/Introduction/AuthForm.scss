@@ -21,14 +21,14 @@
   }
 
   &__bttn {
-    margin-top: 0.4rem;
     padding: 0.5rem 1rem;
     width: 10rem;
     cursor: pointer;
   }
 
   &__error {
-    font-size: 0.8rem;
+    font-size: 1.5rem;
+    height: 1.5rem;
     color: red;
   }
 }

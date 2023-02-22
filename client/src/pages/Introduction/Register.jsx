@@ -109,7 +109,7 @@ function Register() {
           onChange={(e) => inputChangeHandler(e)}
         />
       </div>
-      {error && <p className="auth-form__error">{error}</p>}
+      <p className="auth-form__error">{error}</p>
       <Button onClick={handleRegister} className="auth-form__bttn">
         Register
       </Button>
