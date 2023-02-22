@@ -57,3 +57,19 @@ exports.habit_deleteDay = async (req, res, next) => {
     next(e);
   }
 };
+
+exports.habit_deleteHabit = async (req, res, next) => {
+  try {
+    await db.pool
+      .query(`DELETE FROM logs WHERE activity_id = ${req.params.id}`)
+      .then(
+        await db.pool.query(
+          `DELETE FROM activities WHERE activity_id = ${req.params.id}`
+        )
+      );
+
+    res.status(204).send();
+  } catch (e) {
+    next(e);
+  }
+};

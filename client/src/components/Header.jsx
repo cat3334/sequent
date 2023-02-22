@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../store/userContex";
+import Button from "./Button";
 import "./Header.scss";
 function Header() {
   const { userState, userDispatch } = useContext(UserContext);
@@ -35,10 +36,11 @@ function Header() {
           <p className="header__greeting">
             Hello,{" "}
             <span className="header__greeting-name">{userState.user_name}</span>
+            !
           </p>
-          <button onClick={() => handleLogout()} className="header__logout">
+          <Button onClick={() => handleLogout()} className="header__logout">
             Logout
-          </button>
+          </Button>
         </div>
       )}
     </header>

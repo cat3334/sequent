@@ -1,37 +1,53 @@
-.a {
+.guide__container {
   display: flex;
-  height: calc(100vh - 5rem);
+  height: calc(100vh - 20rem);
+  align-items: center;
+  justify-content: center;
 }
 
 .guide {
   display: flex;
-  max-width: 130rem;
-  border-radius: 5px;
+  border-radius: 10px;
   align-items: center;
   flex-direction: column;
   justify-content: space-around;
-  border: 1px #222 solid;
-  background-color: var(--colorSec);
-  color: white;
+  border: 1px #000 solid;
+  background-color: lightblue;
+  color: #111;
   margin: auto;
-  height: 60rem;
+  height: 50rem;
+  width: 110rem;
+  max-height: 90vh;
+  max-width: 90vw;
+
+  &__header {
+    letter-spacing: 0.5px;
+    border-top: 1rem;
+    font-size: 3rem;
+  }
 
   &__img {
-    height: auto;
-    width: 35rem;
-    margin: 0 auto;
-    object-fit: contain;
+    object-position: 0 0;
+    width: 90%;
+    border-radius: 10px;
+    object-fit: cover;
   }
 
   &__desc {
-    width: 80%;
+    width: 60%;
     margin: 0 auto;
+    font-size: 2rem;
+    line-height: 2.7rem;
   }
 
   &__buttons {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     gap: 1rem;
+
+    & > * {
+      padding: 1rem 3rem;
+      font-weight: bold;
+    }
   }
 }

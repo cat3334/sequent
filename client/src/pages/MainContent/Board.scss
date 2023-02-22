@@ -8,14 +8,15 @@
   th,
   td,
   tr {
-    border: 1px solid #111;
+    border: 2px solid #111;
     text-align: center;
     padding: 1rem;
     border-collapse: collapse;
   }
 
   th {
-    min-width: 10rem;
+    min-width: 8rem;
+    background-color: #d8f5a2;
   }
 
   th:first-child {
@@ -28,7 +29,11 @@
     text-align: center;
     margin: 0 auto;
     width: 90%;
+  }
+}
 
-    // white-space: normal;
+.board__row {
+  &--1 {
+    background-color: aquamarine;
   }
 }

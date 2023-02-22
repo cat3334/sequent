@@ -4,19 +4,29 @@
   font-weight: bold;
   background-color: lightblue;
   padding: 1rem;
-  height: 5rem;
+  min-height: 5rem;
+  flex-wrap: wrap;
+
+  @media (max-width: 25rem) {
+    flex-direction: column;
+  }
 
   &__logo {
     margin-left: 2rem;
     cursor: pointer;
-    font-size: 2rem;
+    font-size: 3rem;
     color: var(--colorMain);
   }
 
   &__logged {
     display: flex;
+    align-items: center;
     gap: 3rem;
     margin: 0 5rem 0 auto;
+
+    @media (max-width: 25rem) {
+      margin: 1rem 0 0 0;
+    }
   }
 
   &__greeting {

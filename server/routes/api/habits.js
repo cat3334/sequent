@@ -5,6 +5,7 @@ const {
   habit_insertDay,
   habit_updateDay,
   habit_deleteDay,
+  habit_deleteHabit,
 } = require("../../controllers/habitsControler");
 const router = express.Router();
 
@@ -12,10 +13,12 @@ router.get("/", habits_get);
 
 router.post("/", habits_create);
 
-router.post("/:id", habit_insertDay);
+router.delete("/:id", habit_deleteHabit);
 
-router.put("/:id", habit_updateDay);
+router.post("/:id/:day", habit_insertDay);
 
-router.delete("/:id", habit_deleteDay);
+router.put("/:id/:day", habit_updateDay);
+
+router.delete("/:id/:day", habit_deleteDay);
 
 module.exports = router;

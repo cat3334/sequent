@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Modal from "../../components/Modal";
 import Register from "./Register";
 import "./Guide.scss";
 import Login from "./Login";
 import { UserContext } from "../../store/userContex";
+import Button from "../../components/Button";
 function Guide() {
   const { userState } = useContext(UserContext);
   const [showRegister, setShowRegister] = useState(false);
@@ -26,31 +27,27 @@ function Guide() {
   };
 
   return (
-    <div className="a">
-      <section className="guide container">
-        <h1 className="guide__title mt-s">About the page</h1>
+    <div className="guide__container">
+      <section className="guide">
+        <h1 className="guide__header">About the page</h1>
         <img
           className="guide__img"
           alt="xoxoxo"
-          src="https://art.ngfiles.com/images/1357000/1357127_angelthecyborgpanda_rq-male-fox-x-femboy-wolf.png?f1595300019"
+          src={require("../../images/sequent2.PNG")}
         />
-        <p className="guide__desc mt-s">
-          Sequent is a tool created with the aim of aiding the user with the
-          goal of Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Corporis soluta sed eligendi veniam laboriosam! Esse quasi quo dicta
-          aperiam! Inventore cupiditate eligendi eum ducimus, delectus quos
-          dolorem facere debitis non.
+        <p className="guide__desc">
+          <b>Sequent</b> is a tool created with the goal of aiding the user with
+          the task of keeping track of his daily habits. Register now and make
+          yourself more accountable by managing a personal timeline that is
+          keeping track of all your accomplishments relating to personal growth!
         </p>
-        <div className="guide__buttons mt-m">
-          <Link to="/board" className="bttn">
-            Try it Out!
-          </Link>
-          <button className="bttn" onClick={() => setShowRegister(true)}>
+        <div className="guide__buttons">
+          <Button className="bttn" onClick={() => setShowRegister(true)}>
             Register
-          </button>
-          <button className="bttn" onClick={() => setShowLogin(true)}>
+          </Button>
+          <Button className="bttn" onClick={() => setShowLogin(true)}>
             Login
-          </button>
+          </Button>
         </div>
       </section>
       {showRegister && (

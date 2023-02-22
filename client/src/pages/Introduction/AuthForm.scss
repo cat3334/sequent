@@ -26,4 +26,9 @@
     width: 10rem;
     cursor: pointer;
   }
+
+  &__error {
+    font-size: 0.8rem;
+    color: red;
+  }
 }

@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import Button from "../../components/Button";
 
 import { UserContext } from "../../store/userContex";
 import "./AuthForm.scss";
@@ -17,8 +18,19 @@ function Login() {
     }));
   };
 
+  const isInputValid = () => {
+    if (!Object.values(inputData).every((x) => x !== "")) {
+      setError("Please fill out all fields!");
+      return false;
+    }
+    return true;
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (!isInputValid()) {
+      return;
+    }
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER}/users/login`,
@@ -69,9 +81,10 @@ function Login() {
           onChange={(e) => inputChangeHandler(e)}
         />
       </div>
-      <button className="auth-form__bttn" onClick={handleLogin}>
+      {error && <p className="auth-form__error">{error}</p>}
+      <Button className="auth-form__bttn" onClick={handleLogin}>
         Login
-      </button>
+      </Button>
     </form>
   );
 }

@@ -1,8 +1,10 @@
 import { useContext, useState } from "react";
+import Button from "../../components/Button";
 import { UserContext } from "../../store/userContex";
 import "./AuthForm.scss";
 function Register() {
   const { userDispatch, userState } = useContext(UserContext);
+  const [error, setError] = useState();
   const [inputData, setInputData] = useState({
     email: "",
     username: "",
@@ -17,8 +19,24 @@ function Register() {
     }));
   };
 
+  const isInputValid = () => {
+    if (!Object.values(inputData).every((x) => x !== "")) {
+      setError("Please fill out all fields!");
+      return false;
+    } else if (inputData.password !== inputData.password2) {
+      setError("Passwords must match!");
+      return false;
+    } else {
+      setError(null);
+      return true;
+    }
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (!isInputValid()) {
+      return;
+    }
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER}/users/new`,
@@ -54,7 +72,7 @@ function Register() {
       <div className="auth-form__input-container">
         <label htmlFor="email">Email</label>
         <input
-          type="text"
+          type="email"
           id="email"
           className="auth-form__input"
           value={inputData.email}
@@ -91,9 +109,10 @@ function Register() {
           onChange={(e) => inputChangeHandler(e)}
         />
       </div>
-      <button onClick={handleRegister} className="auth-form__bttn">
+      {error && <p className="auth-form__error">{error}</p>}
+      <Button onClick={handleRegister} className="auth-form__bttn">
         Register
-      </button>
+      </Button>
     </form>
   );
 }

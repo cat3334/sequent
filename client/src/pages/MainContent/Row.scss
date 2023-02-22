@@ -1,0 +1,46 @@
+.row {
+  &__name-container {
+    display: flex;
+    width: 100%;
+  }
+
+  &__name {
+    justify-self: center;
+    width: 100%;
+    margin-right: 1.5rem;
+  }
+
+  &__delete {
+    color: #d6336c;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  &__delete-container {
+    display: flex;
+    border-top: 1px red solid;
+    width: 100%;
+    margin: 0.5rem 0 0 0;
+    flex-direction: column;
+    justify-content: center;
+
+    p:first-child {
+      margin-top: 0.3rem;
+    }
+  }
+
+  &__delete-options {
+    display: flex;
+    margin-top: 0.1rem;
+    justify-content: center;
+    gap: 2rem;
+
+    > * {
+      cursor: pointer;
+    }
+  }
+}
+
+.hidden {
+  display: none;
+}

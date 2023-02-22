@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import Button from "../../components/Button";
 import { UserContext } from "../../store/userContex";
 import "./HabitForm.scss";
 function HabitForm(props) {
@@ -22,6 +23,7 @@ function HabitForm(props) {
         const e = await response.json();
         throw new Error(e.message);
       }
+      setHabitName("");
       props.setDataUpdated(true);
     } catch (e) {
       alert(e);
@@ -30,7 +32,9 @@ function HabitForm(props) {
 
   return (
     <form className="habitForm" onSubmit={(e) => handleSubmitHabit(e)}>
-      <label htmlFor="habit">Add a new one!</label>
+      <label htmlFor="habit" className="habitForm__label">
+        Add a new one!
+      </label>
       <div className="habitForm__flexContainer">
         <input
           type="text"
@@ -39,7 +43,7 @@ function HabitForm(props) {
           value={habitName}
           onChange={handleChangeInput}
         />
-        <button>Submit</button>
+        <Button className="habitForm__bttn">Submit</Button>
       </div>
     </form>
   );

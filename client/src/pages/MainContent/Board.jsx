@@ -46,6 +46,7 @@ function Board(props) {
   const tableRows = habitsData?.map((habit) => {
     return (
       <Row
+        className="board__row"
         name={habit.name}
         setDataUpdated={props.setDataUpdated}
         selectedDates={props.selectedDates}
