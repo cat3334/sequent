@@ -1,11 +1,13 @@
 import React, { useContext, useState } from "react";
 import Button from "../../components/Button";
+import Spinner from "../../components/Spinner";
 
 import { UserContext } from "../../store/userContex";
 import "./AuthForm.scss";
 function Login() {
   const [error, setError] = useState(true);
-  const { userDispatch, userState } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
+  const { userDispatch } = useContext(UserContext);
   const [inputData, setInputData] = useState({
     email: "",
     password: "",
@@ -31,6 +33,7 @@ function Login() {
     if (!isInputValid()) {
       return;
     }
+    setLoading(true);
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER}/users/login`,
@@ -51,16 +54,16 @@ function Login() {
       }
       console.log(response.headers);
       const data = await response.json();
-
       userDispatch({ type: "login", payload: data });
     } catch (e) {
       alert(e);
+    } finally {
+      setLoading(false);
     }
   };
-  console.log(userState);
+
   return (
     <form className="auth-form">
-      {/* {error && <Prompt />} */}
       <div className="auth-form__input-container">
         <label htmlFor="email">Email</label>
         <input
@@ -82,6 +85,7 @@ function Login() {
         />
       </div>
       {error && <p className="auth-form__error">{error}</p>}
+      {loading && <Spinner />}
       <Button className="auth-form__bttn" onClick={handleLogin}>
         Login
       </Button>

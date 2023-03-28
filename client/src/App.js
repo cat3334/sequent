@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Guide from "./pages/Introduction/Guide";
 import Header from "./components/Header";
 import MainContent from "./pages/MainContent/MainContent";
@@ -35,15 +35,13 @@ function App() {
   }, [userDispatch]);
 
   return (
-    <BrowserRouter>
-      <>
-        <Header />
-      </>
+    <>
+      <Header />
       <Routes>
         <Route path="/" element={<Guide />} />
-        <Route path="/board/" element={<MainContent />} />
+        <Route path="/board" element={<MainContent />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 

@@ -40,6 +40,10 @@ exports.user_login = async (req, res, next) => {
       `SELECT user_email AS email, user_password AS password, user_name, user_id FROM users WHERE user_email = "${req.body.email}"`
     );
 
+    if (!dbData.length) {
+      res.status(402).send({ message: "Bad credentials" });
+    }
+
     const isPasswordValid = await auth.validatePassword(
       req.body.password,
       dbData[0].password
@@ -55,6 +59,7 @@ exports.user_login = async (req, res, next) => {
         res.json(req.session);
       });
     }
+
     res.status(402).send({ message: "Bad credentials" });
   } catch (e) {
     next(e);

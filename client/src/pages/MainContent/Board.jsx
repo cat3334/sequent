@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../../components/Spinner";
 import { UserContext } from "../../store/userContex";
 import "./Board.scss";
 import Row from "./Row";
 function Board(props) {
   const { userState } = useContext(UserContext);
   const [habitsData, setHabitsData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -17,6 +19,7 @@ function Board(props) {
 
   // update data on user edit
   useEffect(() => {
+    setLoading(true);
     props.setDataUpdated(false);
     const getData = async () => {
       try {
@@ -32,6 +35,8 @@ function Board(props) {
         setHabitsData(data);
       } catch (e) {
         alert(e);
+      } finally {
+        setLoading(false);
       }
     };
     getData();
@@ -59,6 +64,9 @@ function Board(props) {
 
   return (
     <div className="board">
+      <p className={`board__loading ${loading ? "visible" : ""}`}>
+        <Spinner />
+      </p>
       <table className="board__table">
         <thead>
           <tr>

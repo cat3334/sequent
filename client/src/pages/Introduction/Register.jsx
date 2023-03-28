@@ -1,10 +1,12 @@
 import { useContext, useState } from "react";
 import Button from "../../components/Button";
+import Spinner from "../../components/Spinner";
 import { UserContext } from "../../store/userContex";
 import "./AuthForm.scss";
 function Register() {
-  const { userDispatch, userState } = useContext(UserContext);
+  const { userDispatch } = useContext(UserContext);
   const [error, setError] = useState();
+  const [loading, setLoading] = useState(false);
   const [inputData, setInputData] = useState({
     email: "",
     username: "",
@@ -37,6 +39,7 @@ function Register() {
     if (!isInputValid()) {
       return;
     }
+    setLoading(true);
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER}/users/new`,
@@ -64,6 +67,8 @@ function Register() {
       });
     } catch (e) {
       alert(e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -113,6 +118,7 @@ function Register() {
       <Button onClick={handleRegister} className="auth-form__bttn">
         Register
       </Button>
+      {loading && <Spinner />}
     </form>
   );
 }

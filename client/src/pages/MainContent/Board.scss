@@ -1,5 +1,6 @@
 .board {
   display: block;
+  position: relative;
   overflow: hidden;
   overflow-x: auto !important;
   margin-top: 0.8rem;
@@ -30,10 +31,21 @@
     margin: 0 auto;
     width: 90%;
   }
+
+  &__loading {
+    display: flex;
+    visibility: hidden;
+    margin-bottom: 0.2rem;
+    justify-content: center;
+  }
 }
 
 .board__row {
   &--1 {
     background-color: aquamarine;
   }
+}
+
+.visible {
+  visibility: visible;
 }

@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
 import Button from "../../components/Button";
+import Spinner from "../../components/Spinner";
 import { UserContext } from "../../store/userContex";
 import "./HabitForm.scss";
 function HabitForm(props) {
   const { userState } = useContext(UserContext);
   const [habitName, setHabitName] = useState();
+  const [loading, setLoading] = useState(false);
 
   const handleChangeInput = (e) => {
     setHabitName(e.target.value);
@@ -12,6 +14,7 @@ function HabitForm(props) {
 
   const handleSubmitHabit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await fetch(`${process.env.REACT_APP_SERVER}/habits`, {
         method: "POST",
@@ -27,6 +30,8 @@ function HabitForm(props) {
       props.setDataUpdated(true);
     } catch (e) {
       alert(e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,6 +49,7 @@ function HabitForm(props) {
           onChange={handleChangeInput}
         />
         <Button className="habitForm__bttn">Submit</Button>
+        {loading && <Spinner />}
       </div>
     </form>
   );
